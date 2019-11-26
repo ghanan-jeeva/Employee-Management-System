@@ -3,20 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.ems;
+package ems;
 
 /**
  *
  * @author 559544
  */
 public class Continued extends javax.swing.JFrame {
+    static MyHashTable hashTable;
 
     /**
      * Creates new form Continue
      */
     public Continued() {
+        hashTable = new MyHashTable(12);
         initComponents();
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -36,9 +39,11 @@ public class Continued extends javax.swing.JFrame {
         listEmployeesButton = new javax.swing.JButton();
         helpButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
+        loadToFileButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        chooseAnActionTitle.setEditable(false);
         chooseAnActionTitle.setFont(new java.awt.Font("Mongolian Baiti", 0, 24)); // NOI18N
         chooseAnActionTitle.setText("Choose An Action");
         chooseAnActionTitle.addActionListener(new java.awt.event.ActionListener() {
@@ -111,35 +116,36 @@ public class Continued extends javax.swing.JFrame {
             }
         });
 
+        loadToFileButton.setText("Load To File");
+        loadToFileButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                loadToFileButtonMousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addComponent(addEmployeeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(removeEmployeeButton)
-                .addGap(105, 105, 105))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(216, 216, 216)
-                .addComponent(helpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(100, Short.MAX_VALUE)
+                .addContainerGap(82, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(searchEmployeeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(listEmployeesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(108, 108, 108)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(editEmployeeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(109, 109, 109))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(chooseAnActionTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(174, 174, 174))))
+                        .addGap(174, 174, 174))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(listEmployeesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(searchEmployeeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(addEmployeeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(108, 108, 108)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(editEmployeeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(removeEmployeeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(helpButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(loadToFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(89, 89, 89))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,17 +156,19 @@ public class Continued extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addEmployeeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(removeEmployeeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(49, 49, 49)
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchEmployeeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(editEmployeeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(listEmployeesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(helpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(loadToFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addComponent(helpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addGap(24, 24, 24))
         );
 
         pack();
@@ -180,14 +188,14 @@ public class Continued extends javax.swing.JFrame {
 
     private void addEmployeeButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addEmployeeButtonMousePressed
         // TODO add your handling code here:
-        AddEmployee addEmp = new AddEmployee();
+        AddEmployee addEmp = new AddEmployee(hashTable);
         addEmp.setVisible(true);
         addEmp.setDefaultCloseOperation(AddEmployee.DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_addEmployeeButtonMousePressed
 
     private void removeEmployeeButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_removeEmployeeButtonMousePressed
         // TODO add your handling code here:
-        RemoveEmployee removeEmp = new RemoveEmployee();
+        RemoveEmployee removeEmp = new RemoveEmployee(hashTable);
         removeEmp.setVisible(true);
         removeEmp.setDefaultCloseOperation(RemoveEmployee.DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_removeEmployeeButtonMousePressed
@@ -198,21 +206,21 @@ public class Continued extends javax.swing.JFrame {
 
     private void searchEmployeeButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchEmployeeButtonMousePressed
         // TODO add your handling code here:
-        SearchEmployee searchEmp = new SearchEmployee();
+        SearchEmployee searchEmp = new SearchEmployee(hashTable);
         searchEmp.setVisible(true);
         searchEmp.setDefaultCloseOperation(SearchEmployee.DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_searchEmployeeButtonMousePressed
 
     private void editEmployeeButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editEmployeeButtonMousePressed
         // TODO add your handling code here:
-        EditEmployee editEmp = new EditEmployee();
+        EditEmployee editEmp = new EditEmployee(hashTable);
         editEmp.setVisible(true);
         editEmp.setDefaultCloseOperation(EditEmployee.DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_editEmployeeButtonMousePressed
 
     private void listEmployeesButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listEmployeesButtonMousePressed
         // TODO add your handling code here:
-        ListAllEmployees allEmp = new ListAllEmployees();
+        ListAllEmployees allEmp = new ListAllEmployees(hashTable);
         allEmp.setVisible(true);
         allEmp.setDefaultCloseOperation(ListAllEmployees.DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_listEmployeesButtonMousePressed
@@ -226,9 +234,20 @@ public class Continued extends javax.swing.JFrame {
 
     private void saveButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMousePressed
         // TODO add your handling code here:
+        SaveToFile saveFile = new SaveToFile(hashTable);
+        saveFile.setVisible(true);
+        saveFile.setDefaultCloseOperation(Help.DISPOSE_ON_CLOSE);
+        
         
         
     }//GEN-LAST:event_saveButtonMousePressed
+
+    private void loadToFileButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loadToFileButtonMousePressed
+        // TODO add your handling code here:
+        Loading loadToFile = new Loading(hashTable);
+        loadToFile.setVisible(true);
+        loadToFile.setDefaultCloseOperation(Help.DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_loadToFileButtonMousePressed
 
     /**
      * @param args the command line arguments
@@ -273,6 +292,7 @@ public class Continued extends javax.swing.JFrame {
     private javax.swing.JButton helpButton;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JButton listEmployeesButton;
+    private javax.swing.JButton loadToFileButton;
     private javax.swing.JButton removeEmployeeButton;
     private javax.swing.JButton saveButton;
     private javax.swing.JButton searchEmployeeButton;

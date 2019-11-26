@@ -1,3 +1,5 @@
+package ems;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.*;
@@ -25,14 +27,15 @@ import javax.swing.JOptionPane;
  * @author ghana
  */
 public class SaveToFile extends javax.swing.JFrame {
-    MyHashTable hashTable;
-    change to fit -- private String saveLocation = "C:/Users/ghana/Document/EmployeeManagementSystem/src";
+    static MyHashTable hashTable;
+    private String saveLocation = "C:/Users/ghana/Documents/NetBeansProjects/JavaApplication1/src/ems";
 
     /**
      * Creates new form SaveToFile
+     * @param hashTable
      */
-    public SaveToFile() {
-        this.hashTable = myHashTable;
+    public SaveToFile(MyHashTable hashTable) {
+        this.hashTable = hashTable;
         initComponents();
     }
 
@@ -47,11 +50,13 @@ public class SaveToFile extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        fileNameBox = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel1.setText("Would You Like To Save To File?");
+        jLabel1.setText("What Would You Like The File Name To Be?");
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton1.setText("Save");
@@ -66,27 +71,36 @@ public class SaveToFile extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane1.setViewportView(fileNameBox);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(60, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(51, 51, 51))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(147, 147, 147)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(23, 23, 23))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(63, 63, 63)
+                .addGap(55, 55, 55)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34))
+                .addGap(48, 48, 48)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         pack();
@@ -105,7 +119,7 @@ public class SaveToFile extends javax.swing.JFrame {
         String separator = "^";
         String data = "";
         try{
-            File file = new File("C:/Users/ghana/" + FileNameBox.getText() + ".txt");       //save location
+            File file = new File("C:/Users/ghana/Documents/" + fileNameBox.getText() + ".txt");       //save location
             
             /*if(!file.exists()){
                file.createNewFile();
@@ -132,8 +146,8 @@ public class SaveToFile extends javax.swing.JFrame {
                               tempEmployee.getFirstName() + separator + 
                               tempEmployee.getLastName() + separator + 
                               tempEmployee.getGender() + separator + 
+                              tempEmployee.getWorkLocation() + separator + 
                               tempEmployee.getDeductRate() + separator + 
-                              tempEmployee.getLocation() + separator + 
                               tempEmployee.getHourlyWage() +  separator + 
                               tempEmployee.getHoursPerWeek() + separator + 
                               tempEmployee.getWeeksPerYear() + "\r\n";
@@ -147,9 +161,9 @@ public class SaveToFile extends javax.swing.JFrame {
                               tempFTEmployee.getFirstName() + separator + 
                               tempFTEmployee.getLastName() + separator + 
                               tempFTEmployee.getGender() + separator + 
-                              tempFTEmployee.getDeductRate() + separator + 
-                              tempFTEmployee.getLocation() + separator + 
-                              tempFTEmployee.getAnnualSalary()+ "\r\n";
+                              tempFTEmployee.getWorkLocation() + separator +
+                              tempFTEmployee.getDeductRate() + separator +  
+                              tempFTEmployee.getSalary()+ "\r\n";
                         bw.write(data);      //write the data onto the file
                         
                    }
@@ -214,13 +228,15 @@ public class SaveToFile extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SaveToFile().setVisible(true);
+                new SaveToFile(hashTable).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextPane fileNameBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

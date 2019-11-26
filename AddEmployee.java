@@ -6,11 +6,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.ems;
+package ems;
 
 
-import EmployeeDoesntExist;
+
 import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
+
 
 /**
  *
@@ -18,12 +20,13 @@ import static java.lang.Double.parseDouble;
  */
 public class AddEmployee extends javax.swing.JFrame {
     
-    MyHashTable hashTable;
+    static MyHashTable hashTable;
     String gender;
     
     
     /**
      * Creates new form AddEmployee
+     * @param hashTable
      */
     public AddEmployee(MyHashTable hashTable) {
         this.hashTable = hashTable;
@@ -38,10 +41,6 @@ public class AddEmployee extends javax.swing.JFrame {
         
         addEmployeeTitle.setEditable(false);
 
-    }
-
-    public AddEmployee() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -67,7 +66,7 @@ public class AddEmployee extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         firstNameBox = new javax.swing.JTextPane();
         jScrollPane5 = new javax.swing.JScrollPane();
-        emplyeeNumberBox = new javax.swing.JTextPane();
+        employeeNumberBox = new javax.swing.JTextPane();
         firstNameText = new javax.swing.JLabel();
         lastNameText = new javax.swing.JLabel();
         workLocation = new javax.swing.JLabel();
@@ -107,9 +106,10 @@ public class AddEmployee extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        addEmployeeTitle.setEditable(false);
         addEmployeeTitle.setFont(new java.awt.Font("Mongolian Baiti", 0, 24)); // NOI18N
         addEmployeeTitle.setText("Add Employee");
-        addEmployeeTitle.setBorder(new javax.swing.border.SoftBevelBorder(0));
+        addEmployeeTitle.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         addEmployeeTitle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addEmployeeTitleActionPerformed(evt);
@@ -127,12 +127,12 @@ public class AddEmployee extends javax.swing.JFrame {
 
         jScrollPane3.setViewportView(firstNameBox);
 
-        emplyeeNumberBox.addKeyListener(new java.awt.event.KeyAdapter() {
+        employeeNumberBox.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                emplyeeNumberBoxKeyTyped(evt);
+                employeeNumberBoxKeyTyped(evt);
             }
         });
-        jScrollPane5.setViewportView(emplyeeNumberBox);
+        jScrollPane5.setViewportView(employeeNumberBox);
 
         firstNameText.setFont(new java.awt.Font("Mongolian Baiti", 0, 14)); // NOI18N
         firstNameText.setText("First Name");
@@ -216,6 +216,11 @@ public class AddEmployee extends javax.swing.JFrame {
         annualSalary.setFont(new java.awt.Font("Mongolian Baiti", 0, 14)); // NOI18N
         annualSalary.setText("Annual Salary");
 
+        annualSalaryBox.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                annualSalaryBoxKeyTyped(evt);
+            }
+        });
         jScrollPane13.setViewportView(annualSalaryBox);
 
         maleSelected.setText("Male");
@@ -246,18 +251,13 @@ public class AddEmployee extends javax.swing.JFrame {
                             .addGap(18, 18, 18)
                             .addComponent(otherSelected))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(51, 51, 51)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(employeeNumber)
-                                        .addComponent(workLocation))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(firstNameText)
-                                        .addComponent(lastNameText))
-                                    .addGap(43, 43, 43)))
+                                .addComponent(employeeNumber, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lastNameText, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(firstNameText, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(workLocation, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addGap(43, 43, 43)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,13 +291,18 @@ public class AddEmployee extends javax.swing.JFrame {
                                             .addComponent(weeksPerYear)
                                             .addComponent(hourlyWage)
                                             .addComponent(annualSalary)
-                                            .addComponent(deductionRate, javax.swing.GroupLayout.Alignment.LEADING))
+                                            .addComponent(deductionRate))
                                         .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
-                                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
-                                            .addComponent(jScrollPane13)
-                                            .addComponent(jScrollPane11)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                                                    .addComponent(jScrollPane13)
+                                                    .addComponent(jScrollPane11))
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(14, 14, 14)
                                         .addComponent(chooseOneOption)))
@@ -315,7 +320,7 @@ public class AddEmployee extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(firstNameText))
                         .addGap(24, 24, 24)
@@ -332,49 +337,49 @@ public class AddEmployee extends javax.swing.JFrame {
                         .addComponent(fullTimeSelect)
                         .addGap(18, 18, 18)
                         .addComponent(partTimeSelect)))
-                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(annualSalary)
-                                .addGap(7, 7, 7)))
-                        .addGap(16, 16, 16)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(hourlyWage)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(hoursPerWeek)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(workLocation))
-                        .addGap(18, 18, 18)
+                        .addGap(27, 27, 27)
                         .addComponent(Gender)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(femaleSelected)
                             .addComponent(otherSelected)
-                            .addComponent(maleSelected))))
+                            .addComponent(maleSelected)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(annualSalary))
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(hourlyWage))
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(hoursPerWeek))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(weeksPerYear)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(weeksPerYear)
-                                .addGap(20, 20, 20)
-                                .addComponent(deductionRate))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(deductionRate))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(63, 63, 63)
                         .addComponent(SubmitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 72, Short.MAX_VALUE))
+                .addGap(0, 66, Short.MAX_VALUE))
         );
 
         pack();
@@ -422,13 +427,14 @@ public class AddEmployee extends javax.swing.JFrame {
         
         String fName = firstNameBox.getText();
         String lName = lastNameBox.getText();
-        int empNumber = Integer.parseInt(employeeNumber.getText());
+        int empNumber = Integer.parseInt(employeeNumberBox.getText());
         double dRate = Double.parseDouble(deductionRateBox.getText());
         String wLocation = workLocationBox.getText();
 
         //gender
         if (maleSelected.isSelected() == true){
                 gender = "male";
+                System.out.println("male is chosen");
             }
             
             if (femaleSelected.isSelected() == true){
@@ -449,14 +455,21 @@ public class AddEmployee extends javax.swing.JFrame {
             int hpw = Integer.parseInt(hoursPerWeekBox.getText());   
             double hWage =  Double.parseDouble(hourlyWageBox.getText());
             int wpy = Integer.parseInt(weeksPerYearBox.getText());
-                        
-            PTEmployee partTimer = new PTEmployee (empNumber, fName, lName, gender, wLocation, dRate, hWage, hpw, wpy);
-            this.hashTable.addEmployee(partTimer);
-            EmployeeSuccessfullyAdded message = new EmployeeSuccessfullyAdded();
-            message.setVisible(true);
-            message.setDefaultCloseOperation(EmployeeSuccessfullyAdded.DISPOSE_ON_CLOSE);
+            
+            
+            if (hashTable.isInTable(empNumber) == false){      
+                this.hashTable.addToTable(new PTEmployee (empNumber, fName, lName, gender, wLocation, dRate, hWage, hpw, wpy));
+                EmployeeSuccessfullyAdded message = new EmployeeSuccessfullyAdded();
+                message.setVisible(true);
+                message.setDefaultCloseOperation(EmployeeSuccessfullyAdded.DISPOSE_ON_CLOSE);
 
             }
+            else{
+                EmployeeAlreadyExists message = new EmployeeAlreadyExists();
+                message.setVisible(true);
+                message.setDefaultCloseOperation(EmployeeAlreadyExists.DISPOSE_ON_CLOSE); 
+            }
+        }
         
         catch (NumberFormatException nfe){            
         }
@@ -469,11 +482,21 @@ public class AddEmployee extends javax.swing.JFrame {
         
             double anSalary = Double.parseDouble(annualSalaryBox.getText());
             
-            
-            FTEmployee fullTimer = new FTEmployee (empNumber, fName, lName, gender, wlocation, dRate, anSalary );
-            this.hashTable.addEmployee(fullTimer);
+            if (hashTable.isInTable(empNumber) == false){  
+            FTEmployee fullTimer = new FTEmployee (empNumber, fName, lName, gender, wLocation, dRate, anSalary );
+            hashTable.addToTable(fullTimer);
+            EmployeeSuccessfullyAdded message = new EmployeeSuccessfullyAdded();
+            message.setVisible(true);
+            message.setDefaultCloseOperation(EmployeeSuccessfullyAdded.DISPOSE_ON_CLOSE);
 
             }
+            else{
+                EmployeeAlreadyExists message = new EmployeeAlreadyExists();
+                message.setVisible(true);
+                message.setDefaultCloseOperation(EmployeeAlreadyExists.DISPOSE_ON_CLOSE); 
+            }
+            }
+            
         
         catch (NumberFormatException nfe){            
         }
@@ -493,20 +516,17 @@ public class AddEmployee extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_maleSelectedActionPerformed
 
-    private void emplyeeNumberBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emplyeeNumberBoxKeyTyped
+    private void employeeNumberBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_employeeNumberBoxKeyTyped
         // TODO add your handling code here:
         char enter = evt.getKeyChar();
         if(!(Character.isDigit(enter))){
             evt.consume();
         }
-    }//GEN-LAST:event_emplyeeNumberBoxKeyTyped
+    }//GEN-LAST:event_employeeNumberBoxKeyTyped
 
     private void deductionRateBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_deductionRateBoxKeyTyped
         // TODO add your handling code here:
-        char enter = evt.getKeyChar();
-        if(!(Character.isDigit(enter))){
-            evt.consume();
-        }
+        
     }//GEN-LAST:event_deductionRateBoxKeyTyped
 
     private void weeksPerYearBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_weeksPerYearBoxKeyTyped
@@ -532,6 +552,14 @@ public class AddEmployee extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_hourlyWageBoxKeyTyped
+
+    private void annualSalaryBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_annualSalaryBoxKeyTyped
+        // TODO add your handling code here:
+        char enter = evt.getKeyChar();
+        if(!(Character.isDigit(enter))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_annualSalaryBoxKeyTyped
 
     /**
      * @param args the command line arguments
@@ -563,7 +591,7 @@ public class AddEmployee extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddEmployee().setVisible(true);
+                new AddEmployee(hashTable).setVisible(true);
             }
         });
     }
@@ -578,7 +606,7 @@ public class AddEmployee extends javax.swing.JFrame {
     private javax.swing.JLabel deductionRate;
     private javax.swing.JTextPane deductionRateBox;
     private javax.swing.JLabel employeeNumber;
-    private javax.swing.JTextPane emplyeeNumberBox;
+    private javax.swing.JTextPane employeeNumberBox;
     private javax.swing.JCheckBox femaleSelected;
     private javax.swing.JTextPane firstNameBox;
     private javax.swing.JLabel firstNameText;

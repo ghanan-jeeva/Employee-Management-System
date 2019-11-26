@@ -3,18 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.ems;
+package ems;
 
-import EmployeeDoesntExist;
-import EmployeeSuccessfullyChanged;
-import EmployeeSuccessfullyChanged;
+
 
 /**
  *
  * @author 559544
  */
 public class EditEmployee extends javax.swing.JFrame {
-    MyHashTable hashTable;
+    static MyHashTable hashTable;
     String gender;
     /**
      * Creates new form EditEmployee
@@ -153,9 +151,10 @@ public class EditEmployee extends javax.swing.JFrame {
         });
         jScrollPane11.setViewportView(deductionRateBox);
 
+        editEmployeeTitle.setEditable(false);
         editEmployeeTitle.setFont(new java.awt.Font("Mongolian Baiti", 0, 24)); // NOI18N
         editEmployeeTitle.setText("Edit Employee");
-        editEmployeeTitle.setBorder(new javax.swing.border.SoftBevelBorder(0));
+        editEmployeeTitle.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         editEmployeeTitle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editEmployeeTitleActionPerformed(evt);
@@ -339,7 +338,6 @@ public class EditEmployee extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(annualSalary))))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -371,16 +369,13 @@ public class EditEmployee extends javax.swing.JFrame {
                             .addComponent(weeksPerYear))
                         .addGap(19, 19, 19)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(SubmitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35))
+                    .addComponent(SubmitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(2, 2, 2)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(deductionRate)
-                            .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -430,7 +425,7 @@ public class EditEmployee extends javax.swing.JFrame {
         //create employee using Employee Info
         int empNumber = Integer.parseInt(employeeNumberBox.getText());
         
-        if(hashTable.isInTable(empNumber) = false){
+        if(hashTable.isInTable(empNumber) == false){
             EmployeeDoesntExist errorMessage = new EmployeeDoesntExist();
             errorMessage.setVisible(true);
             errorMessage.setDefaultCloseOperation(EmployeeDoesntExist.DISPOSE_ON_CLOSE);
@@ -466,7 +461,8 @@ public class EditEmployee extends javax.swing.JFrame {
                     int wpy = Integer.parseInt(weeksPerYearBox.getText());
 
                     PTEmployee partTimer = new PTEmployee (empNumber, fName, lName, gender, wLocation, dRate, hWage, hpw, wpy);
-                    this.hashTable.addEmployee(partTimer);
+                    hashTable.removeFromTable(empNumber);
+                    this.hashTable.addToTable(partTimer);
                     EmployeeSuccessfullyChanged message = new EmployeeSuccessfullyChanged();
                     message.setVisible(true);
                     message.setDefaultCloseOperation(EmployeeSuccessfullyChanged.DISPOSE_ON_CLOSE);
@@ -483,8 +479,9 @@ public class EditEmployee extends javax.swing.JFrame {
 
                     double anSalary = Double.parseDouble(annualSalaryBox.getText());
 
-                    FTEmployee fullTimer = new FTEmployee (empNumber, fName, lName, gender, wlocation, dRate, anSalary );
-                    this.hashTable.addEmployee(fullTimer);
+                    FTEmployee fullTimer = new FTEmployee (empNumber, fName, lName, gender, wLocation, dRate, anSalary );                   
+                    hashTable.removeFromTable(empNumber);
+                    this.hashTable.addToTable(fullTimer);
                     EmployeeSuccessfullyChanged message = new EmployeeSuccessfullyChanged();
                     message.setVisible(true);
                     message.setDefaultCloseOperation(EmployeeSuccessfullyChanged.DISPOSE_ON_CLOSE);
@@ -495,6 +492,7 @@ public class EditEmployee extends javax.swing.JFrame {
                 }
 
             }
+        }
 
         //Call addToFunction and use employee number as input parameter
 
@@ -504,27 +502,28 @@ public class EditEmployee extends javax.swing.JFrame {
         // TODO add your handling code here:
         int empNumber = Integer.parseInt(employeeNumberBox.getText());
         firstNameBox.setText(this.hashTable.empInfo(empNumber).getFirstName());
-        lastNameBox.setText(this.hashTable.empInfo(empNumber).getFirstName());
-        workLocationBox.setText(this.hashTable.empInfo(empNumber).getworkLocation());
+        lastNameBox.setText(this.hashTable.empInfo(empNumber).getLastName());
+        workLocationBox.setText(this.hashTable.empInfo(empNumber).getWorkLocation());
         deductionRateBox.setText(Double.toString(this.hashTable.empInfo(empNumber).getDeductRate()));
         
-        if (hashTable.empInfo(empNumber) instanceof PTemployee){
+        if (hashTable.empInfo(empNumber) instanceof PTEmployee){
             partTimeSelect.setSelected(true);
-            PTEmployee partTimerEdit = (PTEmployee) this.hashTable.empInfo(employeeNumber);
+            PTEmployee partTimerEdit = (PTEmployee) this.hashTable.empInfo(empNumber);
             hourlyWageBox.setText(Double.toString(partTimerEdit.getHourlyWage()));
             hoursPerWeekBox.setText(Integer.toString(partTimerEdit.getHoursPerWeek()));
-            weeksPerYearBox.setText(Integer.toString(partTimerEdit.getWeekPerYear()));
+            weeksPerYearBox.setText(Integer.toString(partTimerEdit.getWeeksPerYear()));
             annualSalaryBox.setText(Double.toString(partTimerEdit.calcAnnualNetIncome(partTimerEdit)));   
         
         
         if (hashTable.empInfo(empNumber) instanceof FTEmployee){
             fullTimeSelect.setSelected(true);
-            FTEmployee fullTimerEdit = (FTEmployee) this.hashTable.empInfo(employeeNumber);
+            FTEmployee fullTimerEdit = (FTEmployee) this.hashTable.empInfo(empNumber);
             annualSalaryBox.setText(Double.toString(fullTimerEdit.calcAnnualNetIncome(fullTimerEdit)));   
         }
         }
         
-        hashTable.removeFromTable(empNumber);
+        
+        
         
     }//GEN-LAST:event_enterButtonMousePressed
 
@@ -608,7 +607,7 @@ public class EditEmployee extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EditEmployee().setVisible(true);
+                new EditEmployee(hashTable).setVisible(true);
             }
         });
     }
